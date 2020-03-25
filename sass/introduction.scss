@@ -1,0 +1,392 @@
+/*! Sass是一个CSS预编译语法
+安装Sass
+	|- npm install -g sass
+编译命令
+	|- sass sass/introduction.scss:css/introduction.css
+自动编译
+	|- sass --watch sass/introduction.scss:css/introduction.css
+CSS编译的格式：
+	|- nested：嵌套
+	|- compact：紧凑
+	|- expanded：扩展
+	|- compressed：压缩
+例如：
+	|- sass --watch sass/introduction.scss:css/introduction.css --style expanded
+后缀名sass和scss不一样，scss比较常用
+	|- sass是缩进式的语法
+	|- scss是使用花括号的语法 
+*/
+
+/* =========使用变量============== */
+// 定义变量
+$primary-color: #1269b5;
+// 变量中使用变量
+$primary-border: 1px solid $primary-color;
+
+div.box {
+	// 引用变量
+	background-color: $primary-color;
+}
+
+h1.page-header {
+	border: $primary-border;
+	// 可以使用下划线去引用变量，尽管定义的时候是中划线
+	// border: $primary_border;
+}
+/* =======嵌套语法======= */
+
+.nav {
+	height: 100px;
+	ul {
+		margin: 0;
+		li {
+			float: left;
+			list-style: none;
+			padding: 5px;
+		}
+	}
+}
+
+/* 嵌套时如何调用父选择器 */
+
+a {
+	display: block;
+	&:hover {
+		background-color: #0d2f7e;
+	}
+}
+
+/* 父选择器的其他用法 */
+
+.icon {
+	display: block;
+	& &-danger {
+		font-size: 15px;
+	}
+}
+
+/* 属性也能嵌套 */
+body {
+	font: {
+		family: Microsoft Yahei;
+		size: 15px;
+		weight: bold;
+	}
+}
+
+.nav {
+	border: 1px solid #000 {
+		left: 0;
+		right: 0;
+	}
+}
+
+/* =======Mixin========= */
+
+@mixin alert($text-color, $background) {
+	color: $text-color;
+	background-color: $background;
+	a {
+		color: darken($text-color, 10%);
+	}
+}
+
+.alert-warning {
+	// 使用@include来使用mixin
+	@include alert(#8a6d3b, #fcf8e3);
+}
+
+.alert-info {
+	@include alert($background: #d9edf7, $text-color: #31708f);
+}
+
+/* =========extend========== */
+
+.alert {
+	padding: 15px;
+}
+
+// 也会继承a标签
+.alert a {
+	font-weight: bold;
+}
+
+.alert-info {
+	@extend .alert;
+	background-color: #d9edf7;
+}
+
+/* ========import======== */
+/* Partials的定义：_xxx.scss 不会被编译 */
+
+@import "_base";
+
+/* ====注释==== */
+
+/*
+多行注释会保留
+*/
+
+// 不会被保留
+
+/*!
+强制保留，尽管是在compressed模式下。
+*/
+
+/* =====数据类型====== */
+
+/* sass -i 可以使用Sass命令行 */
+/* type-of(5)  ==>  #{type-of(5)} */
+/* type-of(5px)  ==>  #{type-of(5px)} */
+/* type-of("hello")  ==>  #{type-of("hello")} */
+/* type-of(1px solid #000)  ==>  #{type-of(1px solid #000)} */
+/* type-of(5px 10px)  ==>  #{type-of(5px 10px)} */
+/* type-of(#ff0000)  ==>  #{type-of(#ff0000)} */
+/* type-of(red)  ==>  #{type-of(red)} */
+/* type-of(rgb(255, 0, 0))  ==>  #{type-of(rgb(255, 0, 0))} */
+/* type-of(hsl(0, 100%, 50%))  ==>  #{type-of(hsl(0, 100%, 50%))} */
+
+
+/* ========number的操作======= */
+/* 2 + 8  ==>  #{2 + 8} */
+/* 2 * 8  ==>  #{2 * 8} */
+// 因为在CSS种有些属性的值会用到"/"
+/* 8 / 2  ==>  #{8 / 2} */
+/* (8/2)  ==>  #{(8/2)} */
+/* 5px + 5px  ==>  #{5px + 5px} */
+/* 5px - 2  ==>  #{5px - 2} */
+/* 5px * 2  ==>  #{5px * 2} */
+/* 5px * 2px  ==>  10px*px */
+/* (10px / 2px)  ==>  #{(10px / 2px)} */
+/* (10px / 2)  ==>  #{(10px / 2)} */
+/* 3 + 3 * 5px  ==>  #{3 + 3 * 5px} */
+/* (3 + 2) * 5px  ==>  #{(3 + 2) * 5px} */
+
+/* ==========处理数字的函数========= */
+/* abs(10)  ==>  #{abs(10)} */
+/* abs(10px)  ==>  #{abs(10px)} */
+/* abs(-10px)  ==>  #{abs(-10px)} */
+/* round(3.5)  ==>  #{round(3.5)} */
+/* round(3.2)  ==>  #{round(3.2)} */
+/* ceil(3.2)  ==>  #{ceil(3.2)} */
+/* floor(3.6)  ==>  #{floor(3.6)} */
+/* percentage(650px / 1000px)  ==>  #{percentage(650px / 1000px)} */
+/* 下面两个函数之所以没有变化，是因为在CSS种也有类似的函数 */
+/* min(1, 2, 3)  ==>  #{min(1, 2, 3)} */
+/* max(1, 2, 3)  ==>  #{max(1, 2, 3)} */
+
+/* =======字符串类型======== */
+/* 带引号可以包含空格和一些特殊字符 */
+/* "hello" + "world"  ==>  #{"hello" + "world"} */
+/* hello + "world"  ==>  #{hello + "world"} */
+/* "hello" + 8080  ==>  #{"hello" + 8080} */
+/* hello-world  ==>  #{hello-world} */
+/* hello/world  ==>  #{hello/world} */
+
+/* ===========字符串类型函数=========== */
+$greeting: "Hello World";
+
+/* to-upper-case($greeting)  ==>  #{to-upper-case($greeting)} */
+
+/* to-lower-case($greeting)  ==>  #{to-lower-case($greeting)} */
+
+/* str-length($greeting)  ==>  #{str-length($greeting)} */
+
+/* str-index($greeting, "Hello")  ==>  #{str-index($greeting, "Hello")} */
+
+/* str-index($greeting, "World")  ==>  #{str-index($greeting, "World")} */
+
+/* str-insert($greeting, ".com", 12)  ==>  #{str-insert($greeting, ".com", 12)} */
+
+/* =================颜色数据类型============= */
+
+/* rgb(红， 绿， 蓝) */
+body {
+	background-color: rgba(255, 0, 0, 0.8)
+}
+
+/* 色相 饱和度 明度 hsl */
+body {
+	// 自动转换成rgba
+	background-color: hsla(60, 100%, 50%, 0.5);
+}
+
+$base-color: #d92626;
+$base-color-hsl: hsl(0, 100, 50%);
+
+/* 调整色相：adjust-hue() */
+body {
+	// 调整H，色相，例如: 红 --> 绿
+	background-color: adjust-hue($base-color-hsl, 137deg);
+}
+
+/* 调整明度：lighten() & darken() */
+
+// 颜色变亮 hsl种的l
+$light-color: lighten($base-color, 30%);
+// 颜色变暗
+$dark-color: darken($base-color, 20%);
+
+.alert-l {
+	border: 1px solid $base-color;
+	background-color: $light-color;
+	color: $dark-color;
+}
+
+/* 调整饱和度（鲜亮和黑白）：saturate() & desaturate() */
+
+$saturate-color: saturate($base-color, 20%);
+$desaturate-color: desaturate($base-color, 30%);
+
+.alert-s {
+	background-color: $saturate-color;
+}
+
+.alert-info-s {
+	background-color: $desaturate-color;
+}
+
+/* 调整透明度 transparentize() & opacify() */
+$fade-out-color: transparentize($base-color, 0.2);
+$fade-in-color: opacify($fade-out-color, 0.1);
+
+.alert-a {
+	background-color: $fade-in-color;
+	border: 1px solid $fade-out-color;
+}
+
+/* ==========list数据类型=========== */
+/* type-of(1px solid #ff0000)  ==>  #{type-of(1px solid #ff0000)} */
+/* type-of(("Microsoft Yahei", Consolas))  ==>  #{type-of(("Microsoft Yahei", Consolas))} */
+/* type-of((5px 10px, 5px 0))  ==>  #{type-of((5px 10px, 5px 0))} */
+/* type-of((5px 10px) (5px 0))  ==>  #{type-of((5px 10px) (5px 0))} */
+
+/* list的函数 */
+/* length(1px 10px)  ==>  #{length(1px 10px)} */
+/* nth(1px 10px, 1)  ==>  #{nth(1px 10px, 1)} */
+/* index(1px solid red, solid)  ==>  #{index(1px solid red, solid)} */
+/* append(1px 10px, 5px)  ==>  #{append(1px 10px, 5px)} */
+/* join(1px 10px, 1px 0, comma)  ==>  #{join(1px 10px, 1px 0, comma)} */
+
+/* ========Map的函数======= */
+$map: (key1: value1, key2: value2, key3: value3);
+/* length($map)  ==>  #{length($map)} */
+/* map-get($map, key1)  ==>  #{map-get($map, key1)} */
+/* map-keys($map)  ==>  #{map-keys($map)} */
+/* map-values($map)  ==>  #{map-values($map)} */
+/* map-has-key($map, key1)  ==>  #{map-has-key($map, key1)} */
+/* map-merge($map, (key4: value4))  ==>  (key1: value1, key2: value2, key3: value3, key4: value4) */
+/* map-remove($map, key1, key2)  ==>  (key3: value3) */
+
+/* ========Boolean========= */
+/* 5px > 3px  ==>  #{5px > 3px} */
+/* 5px > 10px  ==>  #{5px > 10px} */
+// ... ...
+/* (5px > 3px) and (5px > 10px)  ==>  #{(5px > 3px) and (5px > 10px)} */
+/* (5px > 3px) and (5px < 10px)  ==>  #{(5px > 3px) and (5px < 10px)} */
+/* (5px > 3px) or (5px > 10px)  ==>  #{(5px > 3px) or (5px > 10px)} */
+/* not (5px > 3px)  ==>  #{not (5px > 3px)} */
+
+
+/* =========Interpolation语法========== */
+
+$version: "0.0.1";
+
+/* 项目当前的版本：#{$version} */
+
+$name: "info";
+$attr: "border";
+
+.alert-#{$name} {
+	#{$attr}-color: #ccc;
+}
+
+/* ===========控制指令============ */
+
+/* @if */
+
+$user-prefixes: true;
+
+.rounded {
+	@if $user-prefixes {
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+		-ms-border-radius: 5px;
+		-o-border-radius: 5px;
+	}
+	border-radius: 5px;
+}
+
+$theme: light;
+
+body {
+	@if $theme == dark {
+		background-color: black;
+	} @else if $theme == light {
+		background-color: white;
+	} @else {
+		background-color: grey;
+	}
+}
+
+/* @for from through */
+
+$columns: 4;
+
+@for $i from 1 through $columns {
+	.col-#{$i} {
+		width: 100% / $columns * $i;
+	}
+}
+
+/* 使用to替换 */
+
+@for $i from 1 to $columns {
+	.col-#{$i} {
+		width: 100% / $columns * $i;
+	}
+}
+
+/* @each */
+
+$icons: success error warning;
+
+@each $item in $icons {
+	.icon-#{$item} {
+		background-image: url(../images/icons/#{$item}.png);
+	}
+}
+
+/* @while */
+
+$i: 6;
+
+@while $i > 0 {
+	.item-#{$i} {
+		width: 5px * $i;
+	}
+	$i: $i - 2;
+}
+
+/* 用户自定义函数 */
+
+$colors: (light: #ffffff, dark: #000000);
+
+@function color($key) {
+	@if not (type-of($key) == "string") {
+		@error "key必须是一个字符串, 当前类型是：\"#{type-of($key)}\"";
+	}
+	/* 警告和提示信息 */
+	@if not map-has-key($colors, $key) {
+		@warn "在$colors里面没有找到#{$key}, 这个key";
+	}
+	@return map-get($colors, $key);
+}
+
+body {
+	background-color: color("dark");
+}
+
+body {
+	background-color: color("red");
+}

@@ -1,0 +1,310 @@
+@charset "UTF-8";
+/*! Sass是一个CSS预编译语法
+安装Sass
+	|- npm install -g sass
+编译命令
+	|- sass sass/introduction.scss:css/introduction.css
+自动编译
+	|- sass --watch sass/introduction.scss:css/introduction.css
+CSS编译的格式：
+	|- nested：嵌套
+	|- compact：紧凑
+	|- expanded：扩展
+	|- compressed：压缩
+例如：
+	|- sass --watch sass/introduction.scss:css/introduction.css --style expanded
+后缀名sass和scss不一样，scss比较常用
+	|- sass是缩进式的语法
+	|- scss是使用花括号的语法 
+*/
+/* =========使用变量============== */
+div.box {
+  background-color: #1269b5;
+}
+
+h1.page-header {
+  border: 1px solid #1269b5;
+}
+
+/* =======嵌套语法======= */
+.nav {
+  height: 100px;
+}
+.nav ul {
+  margin: 0;
+}
+.nav ul li {
+  float: left;
+  list-style: none;
+  padding: 5px;
+}
+
+/* 嵌套时如何调用父选择器 */
+a {
+  display: block;
+}
+a:hover {
+  background-color: #0d2f7e;
+}
+
+/* 父选择器的其他用法 */
+.icon {
+  display: block;
+}
+.icon .icon-danger {
+  font-size: 15px;
+}
+
+/* 属性也能嵌套 */
+body {
+  font-family: Microsoft Yahei;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.nav {
+  border: 1px solid #000;
+  border-left: 0;
+  border-right: 0;
+}
+
+/* =======Mixin========= */
+.alert-warning {
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+}
+.alert-warning a {
+  color: #66512c;
+}
+
+.alert-info {
+  color: #31708f;
+  background-color: #d9edf7;
+}
+.alert-info a {
+  color: #245269;
+}
+
+/* =========extend========== */
+.alert, .alert-info {
+  padding: 15px;
+}
+
+.alert a, .alert-info a {
+  font-weight: bold;
+}
+
+.alert-info {
+  background-color: #d9edf7;
+}
+
+/* ========import======== */
+/* Partials的定义：_xxx.scss 不会被编译 */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* ====注释==== */
+/*
+多行注释会保留
+*/
+/*!
+强制保留，尽管是在compressed模式下。
+*/
+/* =====数据类型====== */
+/* sass -i 可以使用Sass命令行 */
+/* type-of(5)  ==>  number */
+/* type-of(5px)  ==>  number */
+/* type-of("hello")  ==>  string */
+/* type-of(1px solid #000)  ==>  list */
+/* type-of(5px 10px)  ==>  list */
+/* type-of(#ff0000)  ==>  color */
+/* type-of(red)  ==>  color */
+/* type-of(rgb(255, 0, 0))  ==>  color */
+/* type-of(hsl(0, 100%, 50%))  ==>  color */
+/* ========number的操作======= */
+/* 2 + 8  ==>  10 */
+/* 2 * 8  ==>  16 */
+/* 8 / 2  ==>  8/2 */
+/* (8/2)  ==>  4 */
+/* 5px + 5px  ==>  10px */
+/* 5px - 2  ==>  3px */
+/* 5px * 2  ==>  10px */
+/* 5px * 2px  ==>  10px*px */
+/* (10px / 2px)  ==>  5 */
+/* (10px / 2)  ==>  5px */
+/* 3 + 3 * 5px  ==>  18px */
+/* (3 + 2) * 5px  ==>  25px */
+/* ==========处理数字的函数========= */
+/* abs(10)  ==>  10 */
+/* abs(10px)  ==>  10px */
+/* abs(-10px)  ==>  10px */
+/* round(3.5)  ==>  4 */
+/* round(3.2)  ==>  3 */
+/* ceil(3.2)  ==>  4 */
+/* floor(3.6)  ==>  3 */
+/* percentage(650px / 1000px)  ==>  65% */
+/* 下面两个函数之所以没有变化，是因为在CSS种也有类似的函数 */
+/* min(1, 2, 3)  ==>  min(1, 2, 3) */
+/* max(1, 2, 3)  ==>  max(1, 2, 3) */
+/* =======字符串类型======== */
+/* 带引号可以包含空格和一些特殊字符 */
+/* "hello" + "world"  ==>  helloworld */
+/* hello + "world"  ==>  helloworld */
+/* "hello" + 8080  ==>  hello8080 */
+/* hello-world  ==>  hello-world */
+/* hello/world  ==>  hello/world */
+/* ===========字符串类型函数=========== */
+/* to-upper-case($greeting)  ==>  HELLO WORLD */
+/* to-lower-case($greeting)  ==>  hello world */
+/* str-length($greeting)  ==>  11 */
+/* str-index($greeting, "Hello")  ==>  1 */
+/* str-index($greeting, "World")  ==>  7 */
+/* str-insert($greeting, ".com", 12)  ==>  Hello World.com */
+/* =================颜色数据类型============= */
+/* rgb(红， 绿， 蓝) */
+body {
+  background-color: rgba(255, 0, 0, 0.8);
+}
+
+/* 色相 饱和度 明度 hsl */
+body {
+  background-color: rgba(255, 255, 0, 0.5);
+}
+
+/* 调整色相：adjust-hue() */
+body {
+  background-color: #00ff48;
+}
+
+/* 调整明度：lighten() & darken() */
+.alert-l {
+  border: 1px solid #d92626;
+  background-color: #f0a8a8;
+  color: #821717;
+}
+
+/* 调整饱和度（鲜亮和黑白）：saturate() & desaturate() */
+.alert-s {
+  background-color: #f30d0d;
+}
+
+.alert-info-s {
+  background-color: #b34c4c;
+}
+
+/* 调整透明度 transparentize() & opacify() */
+.alert-a {
+  background-color: rgba(217, 38, 38, 0.9);
+  border: 1px solid rgba(217, 38, 38, 0.8);
+}
+
+/* ==========list数据类型=========== */
+/* type-of(1px solid #ff0000)  ==>  list */
+/* type-of(("Microsoft Yahei", Consolas))  ==>  list */
+/* type-of((5px 10px, 5px 0))  ==>  list */
+/* type-of((5px 10px) (5px 0))  ==>  list */
+/* list的函数 */
+/* length(1px 10px)  ==>  2 */
+/* nth(1px 10px, 1)  ==>  1px */
+/* index(1px solid red, solid)  ==>  2 */
+/* append(1px 10px, 5px)  ==>  1px 10px 5px */
+/* join(1px 10px, 1px 0, comma)  ==>  1px, 10px, 1px, 0 */
+/* ========Map的函数======= */
+/* length($map)  ==>  3 */
+/* map-get($map, key1)  ==>  value1 */
+/* map-keys($map)  ==>  key1, key2, key3 */
+/* map-values($map)  ==>  value1, value2, value3 */
+/* map-has-key($map, key1)  ==>  true */
+/* map-merge($map, (key4: value4))  ==>  (key1: value1, key2: value2, key3: value3, key4: value4) */
+/* map-remove($map, key1, key2)  ==>  (key3: value3) */
+/* ========Boolean========= */
+/* 5px > 3px  ==>  true */
+/* 5px > 10px  ==>  false */
+/* (5px > 3px) and (5px > 10px)  ==>  false */
+/* (5px > 3px) and (5px < 10px)  ==>  true */
+/* (5px > 3px) or (5px > 10px)  ==>  true */
+/* not (5px > 3px)  ==>  false */
+/* =========Interpolation语法========== */
+/* 项目当前的版本：0.0.1 */
+.alert-info {
+  border-color: #ccc;
+}
+
+/* ===========控制指令============ */
+/* @if */
+.rounded {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+
+body {
+  background-color: white;
+}
+
+/* @for from through */
+.col-1 {
+  width: 25%;
+}
+
+.col-2 {
+  width: 50%;
+}
+
+.col-3 {
+  width: 75%;
+}
+
+.col-4 {
+  width: 100%;
+}
+
+/* 使用to替换 */
+.col-1 {
+  width: 25%;
+}
+
+.col-2 {
+  width: 50%;
+}
+
+.col-3 {
+  width: 75%;
+}
+
+/* @each */
+.icon-success {
+  background-image: url(../images/icons/success.png);
+}
+
+.icon-error {
+  background-image: url(../images/icons/error.png);
+}
+
+.icon-warning {
+  background-image: url(../images/icons/warning.png);
+}
+
+/* @while */
+.item-6 {
+  width: 30px;
+}
+
+.item-4 {
+  width: 20px;
+}
+
+.item-2 {
+  width: 10px;
+}
+
+/* 用户自定义函数 */
+body {
+  background-color: #000000;
+}
+
+/*# sourceMappingURL=introduction.css.map */
